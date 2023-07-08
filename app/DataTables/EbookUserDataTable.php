@@ -9,7 +9,7 @@ use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class EbookDataTable extends DataTable
+class EbookUserDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -31,20 +31,12 @@ class EbookDataTable extends DataTable
             })
 
             ->addColumn('action', function(Ebook $ebook) {
-                $csrf = csrf_field();
-                $method = method_field('delete');
-                $action = route('admin.ebooks.destroy', $ebook->id);
-                $view_url = route('admin.ebooks.show', $ebook->id);
-                $edit_url = route('admin.ebooks.edit', $ebook->id);
+                $view_url = ($ebook->status)? route('user.ebooks.show', $ebook->id): '#';
+                $disabled = ($ebook->status)? 'btn-light': 'btn-danger';
 
                 return <<<HTML
-                        <a href="$view_url" title="View Detail" class="btn btn-light btn-sm"><i class="fa fa-eye"></i></a>
-                        <a href="$edit_url" title="Edit" class="btn btn-light btn-sm"><i class="fa fa-edit"></i></a>
-                        <form action="$action" method="post" class="d-inline">
-                            $csrf
-                            $method
-                            <button class="btn btn-light btn-sm" title="Delete" onclick="return confirm('Are you confirm to delete?')"><i class="fa fa-trash"></i></button>
-                        </form>
+                        <a href="$view_url" title="View Detail" class="btn btn-sm $disabled"><i class="fa fa-eye"></i></a>
+                        <a href="#" title="Purchase" class="btn btn-sm $disabled"><i class="fa fa-shopping-bag"></i></a>
                         HTML;
             })
 
@@ -86,7 +78,7 @@ class EbookDataTable extends DataTable
                 ->orderable(false)
                 ->printable(false)
                 ->exportable(false)
-                ->width(120)
+                ->width(80)
         ];
     }
 

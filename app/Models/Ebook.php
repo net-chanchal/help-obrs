@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
  * @package App\Models
  *
  * Table fields
- *
  * @property $id
  * @property $title
  * @property $slug

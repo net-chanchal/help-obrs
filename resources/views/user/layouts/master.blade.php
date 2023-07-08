@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="{{ asset('img/undraw_rocket.svg') }}" type="image/x-icon">
-    <title>Admin : : @yield('title')</title>
+    <title>User : : @yield('title')</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -27,7 +27,7 @@
 <div id="wrapper">
 
     <!-- Sidebar -->
-    @include('admin.layouts.aside')
+    @include('user.layouts.aside')
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -37,7 +37,7 @@
         <div id="content">
 
             <!-- Navbar -->
-            @include('admin.layouts.nav')
+            @include('user.layouts.nav')
             <!-- End of Navbar -->
 
             <!-- Begin Page Content -->
@@ -48,7 +48,7 @@
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        @include('admin.layouts.footer')
+        @include('user.layouts.footer')
         <!-- End of Footer -->
 
     </div>
@@ -76,7 +76,7 @@
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="{{ route('admin.logout') }}">Logout</a>
+                <a class="btn btn-primary" href="{{ route('user.logout') }}">Logout</a>
             </div>
         </div>
     </div>

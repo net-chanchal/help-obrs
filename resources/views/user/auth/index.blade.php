@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="{{ asset('img/undraw_rocket.svg') }}" type="image/x-icon">
-    <title>Admin : : Login</title>
+    <title>User : : Login</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -16,7 +15,6 @@
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
-
 </head>
 
 <body class="bg-gradient-primary">
@@ -36,12 +34,12 @@
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Admin Login</h1>
+                                    <h1 class="h4 text-gray-900 mb-4">User Login</h1>
                                     @if (session()->has('error'))
                                     <div class="text-danger">{{ session('error') }}</div>
                                     @endif
                                 </div>
-                                <form action="{{ route('admin.check') }}" method="post" class="user">
+                                <form action="{{ route('user.check') }}" method="post" class="user">
                                     @csrf
                                     <div class="form-group">
                                         <label for="email"></label>
@@ -49,7 +47,7 @@
                                         <div class="text-danger ml-2">{{ $message }}</div>
                                         @enderror
                                         <input type="email" class="form-control form-control-user"
-                                               id="email" name="email" aria-describedby="emailHelp"
+                                               id="email" value="{{ old('email') }}" name="email" aria-describedby="emailHelp"
                                                placeholder="Enter Email Address..." autofocus>
                                     </div>
                                     <div class="form-group">
@@ -83,7 +81,7 @@
                                     <a class="small" href="#">Forgot Password?</a>
                                 </div>
                                 <div class="text-center">
-                                    <a class="small" href="#">Create an Account!</a>
+                                    <a class="small" href="{{ route('user.create') }}">Create an Account!</a>
                                 </div>
                             </div>
                         </div>
