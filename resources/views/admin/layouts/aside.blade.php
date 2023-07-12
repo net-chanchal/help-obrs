@@ -26,10 +26,10 @@
         </a>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="">
+    <li class="nav-item {{ request()->routeIs('admin.rents.index')? 'active': '' }}">
+        <a class="nav-link" href="{{ route('admin.rents.index') }}">
             <i class="fas fa-fw fa-list"></i>
-            <span>Orders</span>
+            <span>Customer Orders</span>
         </a>
     </li>
 

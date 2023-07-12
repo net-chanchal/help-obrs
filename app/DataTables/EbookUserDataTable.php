@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\Ebook;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
@@ -32,11 +33,21 @@ class EbookUserDataTable extends DataTable
 
             ->addColumn('action', function(Ebook $ebook) {
                 $view_url = ($ebook->status)? route('user.ebooks.show', $ebook->id): '#';
-                $disabled = ($ebook->status)? 'btn-light': 'btn-danger';
+                $disabled_color = ($ebook->status)? 'btn-light': 'btn-danger';
+                $disabled = ($ebook->status)? '': 'disabled';
+                $ebook_id = $ebook->id;
+                $user_id = Auth::user()->id;
+                $csrf = csrf_field();
+                $action = route('user.ebooks.rent');
 
                 return <<<HTML
                         <a href="$view_url" title="View Detail" class="btn btn-sm $disabled"><i class="fa fa-eye"></i></a>
-                        <a href="#" title="Purchase" class="btn btn-sm $disabled"><i class="fa fa-shopping-bag"></i></a>
+                        <form action="$action" class="d-inline" method="post">
+                            $csrf
+                            <input type="hidden" name="ebook_id" value="$ebook_id">
+                            <input type="hidden" name="user_id" value="$user_id">
+                            <button type="submit" title="Rent" class="btn btn-sm $disabled_color" $disabled><i class="fa fa-shopping-bag"></i></button>
+                        </form
                         HTML;
             })
 

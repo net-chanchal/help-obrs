@@ -30,13 +30,13 @@
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
                     <div class="row">
-                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                        <div class="col-lg-6">
+{{--                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>--}}
+                        <div class="offset-3 col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">User Login</h1>
                                     @if (session()->has('error'))
-                                    <div class="text-danger">{{ session('error') }}</div>
+                                        <div class="text-danger">{{ session('error') }}</div>
                                     @endif
                                 </div>
                                 <form action="{{ route('user.check') }}" method="post" class="user">

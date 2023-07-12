@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\RentController;
 use App\Http\Controllers\User\AuthController as UserAuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\Admin\EbookController;
-use App\Http\Controllers\User\EbookController AS UserEbookController;
+use App\Http\Controllers\User\EbookController as UserEbookController;
+use App\Http\Controllers\User\RentController as UserRentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,7 +29,11 @@ Route::post('admin/check', [AuthController::class, 'check'])->name('admin.check'
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function() {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('ebooks', EbookController::class);
+
+    Route::get('rents/index', [RentController::class, 'index'])->name('rents.index');
+    Route::post('rents/status', [RentController::class, 'status'])->name('rents.status');
 });
+
 
 // User Panel Routes
 Route::get('user/login', [UserAuthController::class, 'index'])->name('user.login');
@@ -41,7 +47,17 @@ Route::group(['prefix' => 'user', 'as' => 'user.', 'middleware' => 'auth'], func
     Route::get('dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('ebooks', [UserEbookController::class, 'index'])->name('ebooks.index');
+    Route::post('ebooks/rent', [UserEbookController::class, 'rent'])->name('ebooks.rent');
     Route::get('ebooks/{ebook}', [UserEbookController::class, 'show'])->name('ebooks.show');
+
+    Route::get('rents', [UserRentController::class, 'index'])->name('rents.index');
 });
 
 Route::redirect('/', 'user/login');
+
+
+Route::get('/test', function() {
+    echo "<pre>";
+    $re = \App\Models\Rent::with('ebook')->get();
+    print_r($re->toArray());
+});

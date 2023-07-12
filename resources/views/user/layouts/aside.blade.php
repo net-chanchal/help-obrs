@@ -26,10 +26,10 @@
         </a>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="#">
+    <li class="nav-item {{ request()->routeIs('user.rents.index')? 'active': '' }}">
+        <a class="nav-link" href="{{ route('user.rents.index') }}">
             <i class="fas fa-fw fa-list"></i>
-            <span>My Ebooks</span>
+            <span>Rent My Books</span>
         </a>
     </li>
 
