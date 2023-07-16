@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\DataTables\EbookDataTable;
+use App\DataTables\Admin\EbookDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEbookRequest;
 use App\Http\Requests\UpdateEbookRequest;

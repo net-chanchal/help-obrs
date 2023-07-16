@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
-use App\DataTables\RentDataTable;
+use App\DataTables\User\RentDataTable;
 use App\Http\Controllers\Controller;
 
 class RentController extends Controller

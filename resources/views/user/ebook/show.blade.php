@@ -63,14 +63,6 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="book_url" class="col-sm-3 col-form-label text-right font-weight-bold">Ebook URL *</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="book_url" value="{{ $ebook->book_url }}" name="book_url" disabled>
-                            <a href="{{ $ebook->book_url }}" target="_blank"><i class="fa fa-eye"></i> View PDF</a>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
                         <label for="summary" class="col-sm-3 col-form-label text-right font-weight-bold">Summary</label>
                         <div class="col-sm-6">
                             <textarea name="summary" id="summary" rows="5" class="form-control" disabled>{{ $ebook->summary }}</textarea>

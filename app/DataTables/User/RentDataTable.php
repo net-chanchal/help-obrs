@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\User;
 
 use App\Models\Rent;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -33,19 +33,30 @@ class RentDataTable extends DataTable
             ->addColumn('pages', function($row) {
                 return $row['ebook'][0]->pages;
             })
+            ->editColumn('payment_status', function($row) {
+                if ($row->payment_status == 'Completed') {
+                    return '<span class="badge badge-success">Completed</span>';
+                }
+                else if ($row->payment_status == 'Pending') {
+                    return '<span class="badge badge-warning">Pending</span>';
+                }
+                else {
+                    return '<span class="badge badge-danger">Rejected</span>';
+                }
+            })
             ->addColumn('date', function($row) {
                 return date('F d, Y h:i A', strtotime($row->created_at));
             })
-            ->addColumn('book', function($row) {
-                $view_url = ($row['ebook'][0]->payment_status == 'Completed')? $row['ebook'][0]->book_url: 'javascript:void(0)';
-                $target = ($row['ebook'][0]->payment_status == 'Completed')? 'target="_blank"': '';
+            ->addColumn('action', function($row) {
+                $view_url = (($row->payment_status == 'Completed')? $row['ebook'][0]->book_url: 'javascript:void(0)');
+                $target = (($row->payment_status == 'Completed')? 'target="_blank"': '');
 
                 return <<<HTML
                         <a href="$view_url" $target title="Read Ebook" class="btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
                         HTML;
             })
 
-            ->rawColumns(['book']);
+            ->rawColumns(['payment_status','action']);
     }
 
     /**
@@ -79,7 +90,7 @@ class RentDataTable extends DataTable
             Column::make('pages'),
             Column::make('date'),
             Column::make('payment_status'),
-            Column::make('book')
+            Column::make('action')
                 ->searchable(false)
                 ->orderable(false)
                 ->printable(false)

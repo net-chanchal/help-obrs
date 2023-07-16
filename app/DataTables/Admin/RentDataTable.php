@@ -1,16 +1,15 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Admin;
 
 use App\Models\Rent;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
-use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class RentUserDataTable extends DataTable
+class RentDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -21,22 +20,22 @@ class RentUserDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
 
+            ->addColumn('user', function($row) {
+                return $row['user'][0]->name;
+            })
+            ->addColumn('email', function($row) {
+                return $row['user'][0]->email;
+            })
             ->addColumn('title', function($row) {
                 return $row['ebook'][0]->title;
             })
             ->addColumn('writer', function($row) {
                 return $row['ebook'][0]->writer;
             })
-            ->addColumn('publisher', function($row) {
-                return $row['ebook'][0]->publisher;
-            })
-            ->addColumn('pages', function($row) {
-                return $row['ebook'][0]->pages;
-            })
-            ->addColumn('date', function($row) {
+            ->editColumn('date', function($row) {
                 return date('F d, Y h:i A', strtotime($row->created_at));
             })
-            ->addColumn('book', function($row) {
+            ->editColumn('status', function($row) {
                 $csrf = csrf_field();
                 $action = route('admin.rents.status');
                 $id = $row->id;
@@ -48,7 +47,7 @@ class RentUserDataTable extends DataTable
                         <form action="$action" class="d-inline" method="post">
                             $csrf
                             <input type="hidden" name="id" value="$id">
-                            <select name="payment_status" onchange="return submit()">
+                            <select name="payment_status" class="form-control form-control-sm" onchange="return submit()">
                                 <option value="Pending" $pending>Pending</option>
                                 <option value="Completed" $completed>Completed</option>
                                 <option value="Rejected" $rejected>Rejected</option>
@@ -56,7 +55,7 @@ class RentUserDataTable extends DataTable
                         </form
                         HTML;
             })
-            ->rawColumns(['book']);
+            ->rawColumns(['status']);
     }
 
     /**
@@ -64,7 +63,7 @@ class RentUserDataTable extends DataTable
      */
     public function query(): QueryBuilder
     {
-        return Rent::with('ebook')->newQuery();
+        return Rent::with('ebook')->with('user')->newQuery();
     }
 
     /**
@@ -84,18 +83,17 @@ class RentUserDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::make('user'),
+            Column::make('email'),
             Column::make('title'),
             Column::make('writer'),
-            Column::make('publisher'),
-            Column::make('pages'),
-            Column::make('date'),
-            Column::make('payment_status'),
-            Column::make('book')
+            Column::make('date')->name('created_at'),
+            Column::make('status')
+                ->name('payment_status')
                 ->searchable(false)
-                ->orderable(false)
                 ->printable(false)
                 ->exportable(false)
-                ->width(20)
+                ->width(100)
 
         ];
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\User;
 
 use App\Models\Ebook;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
@@ -10,7 +10,7 @@ use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class EbookUserDataTable extends DataTable
+class EbookDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -32,21 +32,24 @@ class EbookUserDataTable extends DataTable
             })
 
             ->addColumn('action', function(Ebook $ebook) {
+                $is_rent = count($ebook->rents);
+
                 $view_url = ($ebook->status)? route('user.ebooks.show', $ebook->id): '#';
-                $disabled_color = ($ebook->status)? 'btn-light': 'btn-danger';
-                $disabled = ($ebook->status)? '': 'disabled';
+                $disabled_color = (($ebook->status)? ($is_rent > 0? 'btn-success': 'btn-light'): 'btn-danger');
+                $disabled_view = (($ebook->status)? '': 'disabled');
+                $disabled_submit = (($ebook->status)? ($is_rent > 0? 'disabled': ''): 'disabled');
                 $ebook_id = $ebook->id;
                 $user_id = Auth::user()->id;
                 $csrf = csrf_field();
                 $action = route('user.ebooks.rent');
 
                 return <<<HTML
-                        <a href="$view_url" title="View Detail" class="btn btn-sm $disabled"><i class="fa fa-eye"></i></a>
+                        <a href="$view_url" title="View Detail" class="btn btn-sm $disabled_view"><i class="fa fa-eye"></i></a>
                         <form action="$action" class="d-inline" method="post">
                             $csrf
                             <input type="hidden" name="ebook_id" value="$ebook_id">
                             <input type="hidden" name="user_id" value="$user_id">
-                            <button type="submit" title="Rent" class="btn btn-sm $disabled_color" $disabled><i class="fa fa-shopping-bag"></i></button>
+                            <button type="submit" title="Rent" onclick="return confirm('Are you sure to rent?')" class="btn btn-sm $disabled_color" $disabled_submit><i class="fa fa-shopping-bag"></i></button>
                         </form
                         HTML;
             })
@@ -57,9 +60,9 @@ class EbookUserDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(Ebook $model): QueryBuilder
+    public function query(): QueryBuilder
     {
-        return $model->newQuery();
+        return Ebook::with('rents')->newQuery();
     }
 
     /**

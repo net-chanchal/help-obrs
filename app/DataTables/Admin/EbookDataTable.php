@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Admin;
 
 use App\Models\Ebook;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;

@@ -6,6 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @method static find(mixed $input)
+ *
+ * Table fields
+ * @property $id
+ * @property $ebook_id
+ * @property $user_id
+ * @property $payment_status
+ * @property $created_at
+ * @property $updated_at
+ */
+
 class Rent extends Model
 {
     use HasFactory;

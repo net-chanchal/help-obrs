@@ -8,6 +8,7 @@ use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\Admin\EbookController;
 use App\Http\Controllers\User\EbookController as UserEbookController;
 use App\Http\Controllers\User\RentController as UserRentController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,6 +59,11 @@ Route::redirect('/', 'user/login');
 
 Route::get('/test', function() {
     echo "<pre>";
-    $re = \App\Models\Rent::with('ebook')->get();
-    print_r($re->toArray());
+    $re = \App\Models\Ebook::with('rents')->get();
+
+    $result = (object) $re->toArray();
+
+    foreach ($result as $row) {
+        echo $row['title']. count($row['rents']) . '<br>';
+    }
 });
