@@ -29,6 +29,7 @@ Route::post('admin/check', [AuthController::class, 'check'])->name('admin.check'
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function() {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::resource('ebooks', EbookController::class);
 
     Route::get('rents/index', [RentController::class, 'index'])->name('rents.index');

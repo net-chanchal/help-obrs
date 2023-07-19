@@ -48,11 +48,15 @@ class RentDataTable extends DataTable
                 return date('F d, Y h:i A', strtotime($row->created_at));
             })
             ->addColumn('action', function($row) {
-                $view_url = (($row->payment_status == 'Completed')? $row['ebook'][0]->book_url: 'javascript:void(0)');
+                $view_url = route('user.ebooks.show', $row->ebook_id);
+                $ebook_view = (($row->payment_status == 'Completed')? $row['ebook'][0]->book_url: 'javascript:void(0)');
+                $ebook_download = (($row->payment_status == 'Completed')? $row['ebook'][0]->book_url: 'javascript:void(0)');
                 $target = (($row->payment_status == 'Completed')? 'target="_blank"': '');
 
                 return <<<HTML
-                        <a href="$view_url" $target title="Read Ebook" class="btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
+                        <a href="$view_url" title="Detail Ebook" class="btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
+                        <a href="$ebook_view" $target title="View Ebook" class="btn btn-success btn-sm"><i class="fa fa-book"></i></a>
+                        <a href="$ebook_download" $target title="Download Ebook" class="btn btn-success btn-sm" download="Ebook.pdf"><i class="fa fa-download"></i></a>
                         HTML;
             })
 
@@ -95,7 +99,7 @@ class RentDataTable extends DataTable
                 ->orderable(false)
                 ->printable(false)
                 ->exportable(false)
-                ->width(20)
+                ->width(120)
 
         ];
     }
